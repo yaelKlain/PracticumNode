@@ -11,12 +11,19 @@ const UsersSchema=new mongoose.Schema({
 module.exports=mongoose.model('Uswwer',UsersSchema)
 const Joi = require('joi');
 
-export const schemaForCreateUser = Joi.object({
-  name: Joi.string().min(2).required(),
-  email: Joi.string().email().required(),
-  phone: Joi.string().min(8).required(),
+export const schemaForUpdateUser = Joi.object({
+  name: Joi.string().min(2),
+  email: Joi.string().email(),
+  phone: Joi.string().min(10),
 });
 
+
+let validate = schemaForUpdateUser(req.body);
+if (validate.error){
+  return res.status(400).json({ message: 'valid' });
+}
+////
+///bnm,.
 
 
 //
