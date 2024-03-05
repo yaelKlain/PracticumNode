@@ -4,24 +4,24 @@ const userList = [
     { id: "3", name: "rina",email:"@789",phone:789 },
 ]
 
-// exports.getAllUsers = (req, res) => {
-
-//     res.send(userList)
-// }
 
 exports.createUser = (req, res) => {
 
     userList.push(req.body)
     res.send(userList)
+    if (validate.error){
+        res.send("error")
+      }
+      
 }
 
 exports.getUserById = (req, res) => {
     const { id } = req.params
     console.log(req.params);
     const usr = userList.find(x => x.id === id)
-    console.log(usr);
+    
     if (!usr) {
-        res.status(404).json({ massege: "usr not found" })
+        res.status(404).json({ massege: "usr not exist" })
     }
     res.send(usr)
 }
