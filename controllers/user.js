@@ -1,61 +1,66 @@
-const userList = [
-    { id: "11", name: "havi",email:"@123",phone:123 },
-    { id: "2", name: "yael",email:"@456",phone:456 },
-    { id: "3", name: "rina",email:"@789",phone:789 },
-]
+const mongoose = require('mongoose')
+const { User, validUser } = require('../modells/users')
+const { addUser, geteUser, remove, updateServices } = require('../service/user')
+const { log } = require('console')
 
+exports.createUser = async (req, res) => {
 
-exports.createUser = (req, res) => {
-
-    userList.push(req.body)
-    res.send(userList)
-    if (validate.error){
-        res.send("error")
-      }
-      
-}
-
-exports.getUserById = (req, res) => {
-    const { id } = req.params
-    console.log(req.params);
-    const usr = userList.find(x => x.id === id)
-    
-    if (!usr) {
-        res.status(404).json({ massege: "usr not exist" })
-    }
-    res.send(usr)
-}
-
-
-exports.deleteUserById = (req, res) => {
-    const id = req.params.id
-
-    const index = userList.findIndex(x => x.id === id)
-    userList.splice(index, 1)
-    res.send(userList)
-}
-
-
-
-
-exports.upDateUser = async (req, res) => {
-    const { userId } = req.params;
-    const { name, email } = req.body;
-  
     try {
-      const updatedUser = await User.findOneAndUpdate(
-        { userId: userId }, // עדכון לפי שדה userId
-        { name, email },
-        { new: true }
-      );
-  
-      if (!updatedUser) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      res.json(updatedUser);
+        let validate = validUser(req.body);
+        console.log(validate);
+        if (validate.error) {
+            return res.status(400).json({ message: 'valid' });
+        }
+        addUser(req.body)
+        res.status(200).json({ message: 'ok' });
+
     } catch (error) {
-      console.error('Failed to update user:', error);
-      res.status(500).json({ message: 'Failed to update user' });
+        console.error(error);
     }
-  };
+}
+
+exports.getUserById = async (req, res) => {
+
+    try {
+        const user = geteUser(req.params)
+        res.status(200).json({ message: 'ok' });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+exports.deleteUserById = async (req, res) => {
+
+    try {
+        const { error } = validUser(req.body);
+        if (error) {
+            res.status(400).json({ message: error.details });
+        }
+        const deletedUser = remove(req.params);
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        return res.json({ message: 'delete user successfully' });
+
+    } catch (error) {
+        console.error('Failed to delete user:', error);
+    }
+};
+
+
+exports.updateUser = async (req, res) => {
+
+    try {        
+        const updatedUser= updateServices(req.params, req.body)
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        console.log(updatedUser);
+
+        return res.json({ message: 'update user successfully' });
+    } catch (error) {
+        console.error('Failed to update user:', error);
+        res.status(500).json({ message: 'Failed to update user' });
+    }
+};
