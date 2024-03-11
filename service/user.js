@@ -18,7 +18,7 @@ exports.geteUser = async (reqParm) => {
 
     const userid = reqParm.userid;
     console.log(userid);
-   
+
     try {
 
         const usr = await User.find({ "userid": userid });
@@ -48,23 +48,24 @@ exports.remove = async (reqBody) => {
     }
 }
 
-// exports.updateServices = async (reqParams, reqBody) => {
 
-//     const userid = reqParams;
-//     console.log(userid);
-//     const name = reqBody.name;
-//     const email = reqBody.email;
-//     console.log(name);
+exports.updateServices = async (reqParams, reqBody) => {
 
-//     try {
-//         const updatedUser = await User.findOneAndUpdate(
-//             { userid: userid }, // עדכון לפי שדה userid
-//             { name, email },
-//             { new: true }
-//         );
-//         return updatedUser
+    const userid = reqParams;
+    console.log(userid);
+    const name = reqBody.name;
+    const email = reqBody.email;
+    console.log(name);
 
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { userid: userid }, // עדכון לפי שדה userid
+            { name, email },
+            { new: true }
+        );
+        return updatedUser
+
+    } catch (error) {
+        console.error(error);
+    }
+};
