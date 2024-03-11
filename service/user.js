@@ -18,7 +18,7 @@ exports.geteUser = async (reqParm) => {
 
     const userid = reqParm.userid;
     console.log(userid);
-    console.log('fggf');
+
     try {
 
         const usr = await User.find({ "userid": userid });
@@ -47,6 +47,7 @@ exports.remove = async (reqBody) => {
 
     }
 }
+
 
 exports.updateServices = async (reqParams, reqBody) => {
 

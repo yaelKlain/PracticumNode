@@ -20,6 +20,7 @@ exports.User = User
 
 const Joi = require('joi');
 
+
 exports.validUser = (_bodyData) => {
     let joiSchema = Joi.object({
         userid: Joi.number(),
@@ -32,9 +33,8 @@ exports.validUser = (_bodyData) => {
 }
 
 
-// export const schemaForUpdateUser = Joi.object({
-//     name: Joi.string().min(2),
-//     email: Joi.string().email(),
-//     phone: Joi.string().min(10),
-//   });
+
+
+
+
 
